@@ -27,7 +27,7 @@ endif()
 add_definitions(-DFL_BUILD_PATH="${CMAKE_SOURCE_DIR}") #used to determine FL__FILE__
 
 option(FL_BUILD_SHARED "Build shared library" ON)
-option(FL_BUILD_STATIC "Build static library" ON)
+option(FL_BUILD_STATIC "Build static library" OFF)
 if(FL_BUILD_SHARED)
     option(FL_BUILD_BINARY "Build fuzzylite binary" ON)
 endif()
@@ -141,7 +141,6 @@ include_directories(.)
 file(STRINGS FL_HEADERS fl-headers)
 file(STRINGS FL_SOURCES fl-sources)
 file(STRINGS FL_TESTS fl-tests)
-
 string(REGEX REPLACE "\n" " " ${fl-headers} ${fl-headers})
 string(REGEX REPLACE "\n" " " ${fl-sources} ${fl-sources})
 string(REGEX REPLACE "\n" " " ${fl-tests} ${fl-tests})
@@ -192,7 +191,7 @@ if(FL_BUILD_STATIC)
 endif()
 
 if(FL_BUILD_BINARY)
-    add_executable(fl-bin src/main.cpp)
+    add_executable(fl-bin src/old-main.cpp)
     set_target_properties(fl-bin PROPERTIES OUTPUT_NAME fuzzylite)
     set_target_properties(fl-bin PROPERTIES OUTPUT_NAME fuzzylite IMPORT_PREFIX tmp-) #To prevent LNK1149 in Windows
     set_target_properties(fl-bin PROPERTIES DEBUG_POSTFIX -debug)
@@ -269,7 +268,7 @@ endif()
 install(DIRECTORY fl/ DESTINATION include/fl)
 
 #pkg-config
-configure_file(${CMAKE_SOURCE_DIR}/fuzzylite.pc.in ${CMAKE_BINARY_DIR}/fuzzylite.pc @ONLY)
+#configure_file(${CMAKE_SOURCE_DIR}/fuzzylite.pc.in ${CMAKE_BINARY_DIR}/fuzzylite.pc @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/fuzzylite.pc DESTINATION ${FL_INSTALL_LIBDIR}/pkgconfig)
 
 message("=====================================")
